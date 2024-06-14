@@ -1,0 +1,19 @@
+{
+  "name": "demo_credit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node build/server.js",
+    "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' --files src/server.ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-Abegunde99:Abegunde99/Demo_Credit.git"
+  },
+  "keywords": [],
+  "author": "Abegunde Olanrewaju",
+  "license": "ISC"
+}
