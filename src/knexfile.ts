@@ -1,16 +1,15 @@
 import { Knex } from 'knex';
-import dotenv from 'dotenv';
-dotenv.config();
+import environ from './config/config';
 
 const config: Knex.Config = {
-  client: 'mysql',
+  client: 'mysql2',
   useNullAsDefault: true,
   connection: {
-    port: parseInt(process.env.DB_PORT as string),                          
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB
+    port: parseInt(environ.DB_PORT as string),                          
+    host: environ.DB_HOST,
+    user: environ.DB_USER,
+    password: environ.DB_PASSWORD,
+    database: environ.DB
   },
   migrations: {
     directory: './database/migrations'
