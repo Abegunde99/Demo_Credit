@@ -31,4 +31,9 @@ app.use(helmet());
 // app.use(xssclean())
 
 
+//errorHandler
+import errorHandler from './middlewares/error';
+app.use(errorHandler)
+
+
 export default app;
