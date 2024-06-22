@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-// import xssclean from 'xss-clean';
+import xssClean from 'xss-clean';
 import dotenv from 'dotenv';
 import mongoSanitize from 'express-mongo-sanitize';
 
@@ -28,7 +28,7 @@ app.use(mongoSanitize());
 app.use(helmet());
 
 //Prevent XSS-CLEAN
-// app.use(xssclean())
+app.use(xssClean())
 
 
 //errorHandler

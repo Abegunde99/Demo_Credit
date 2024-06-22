@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import environ from './config/config';
+import path from 'path';
 
 const config: Knex.Config = {
   client: 'mysql2',
@@ -12,10 +13,10 @@ const config: Knex.Config = {
     database: environ.DB
   },
   migrations: {
-    directory: './database/migrations'
+    directory: path.join(__dirname, 'database', 'migrations')
   },
   seeds: {
-    directory: './database/seeds'
+    directory: path.join(__dirname, 'database', 'seeds')
   }
 };
 
