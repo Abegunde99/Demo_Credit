@@ -133,7 +133,7 @@ export interface IWalletTf {
 
 // JWT Interface
 export interface UserJWT {
-    id: number;
+    _id: number;
     iat: number;
     exp: number;
 }
