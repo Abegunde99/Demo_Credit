@@ -14,7 +14,7 @@ class PaystackService {
                 {
                   email: email,
                   amount: amount * 100,
-                  callback_url: process.env.CALLBACK_URL
+                  callback_url: environs.CALLBACK_URL
                 },
                 {
                     headers: {
@@ -38,7 +38,7 @@ class PaystackService {
                 `https://api.paystack.co/transaction/verify/${reference}`,
                 {
                     headers: {
-                      Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`, // Replace with your Paystack secret key
+                      Authorization: `Bearer ${environs.PAYSTACK_SECRET_KEY}`, // Replace with your Paystack secret key
                       'Content-Type': 'application/json',
                     },
                   }

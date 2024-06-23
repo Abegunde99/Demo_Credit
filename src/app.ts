@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import xssClean from 'xss-clean';
 import dotenv from 'dotenv';
 import mongoSanitize from 'express-mongo-sanitize';
+import router from './routes';
 
 const app = express();
 
@@ -30,6 +31,8 @@ app.use(helmet());
 //Prevent XSS-CLEAN
 app.use(xssClean())
 
+//Routes
+app.use('/api/v1', router);
 
 //errorHandler
 import errorHandler from './middlewares/error';
