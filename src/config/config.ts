@@ -12,4 +12,5 @@ export default {
     DB: process.env.DB,
     JWT_SECRET: process.env.JWT_SECRET,
     JWT_EXPIRE: process.env.JWT_EXPIRES_IN,
+    PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
 }

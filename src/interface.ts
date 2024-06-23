@@ -164,3 +164,9 @@ export interface ITransactionData {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface CustomError extends Error {
+    code?: string;
+    value?: string;
+    statusCode?: number;
+}
