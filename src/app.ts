@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 // import xssClean from 'xss-clean';
-//import hpp from 'hpp';
+import hpp from 'hpp';
 import dotenv from 'dotenv';
 import router from './routes';
 
@@ -29,14 +29,12 @@ app.use(helmet());
 // app.use(xssClean())
 
 //prevent params pollution
-// app.use(hpp())
+app.use(hpp())
 
 //Routes
 app.use('/api/v1', router);
 
 //errorHandler
-// import errorHandler from './middlewares/error';
-// app.use(errorHandler)
 import ErrorMiddleware from "./middlewares/error2";
 app.use(ErrorMiddleware.notFound);
 
