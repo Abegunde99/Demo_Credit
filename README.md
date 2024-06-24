@@ -1,9 +1,9 @@
 # Demo_Credit API
 
-This is an example project that demonstrates the usage of Express, TypeScript, and Mongoose to build a server application with three models: `User`, `Wallet`, and `Transaction`. The server allows transfers between wallets and funding via Paystack.
+This is an example project that demonstrates the usage of Express, TypeScript, and Mysql to build a server application with three models: `User`, `Wallet`, and `Transaction`. The server allows transfers between wallets, withdrawals, and funding via Paystack.
 
 ## Running App
-The live version of the app can be found [here](https://moni-rough-front.vercel.app/)
+The live version of the app can be found [here](https://demo-credit-o9ys.onrender.com/api/v1)
 
 ## Prerequisites
 
