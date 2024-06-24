@@ -20,7 +20,7 @@ class TransactionController {
             }
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
      }
 }

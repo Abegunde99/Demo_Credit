@@ -14,4 +14,5 @@ export default {
     JWT_EXPIRE: process.env.JWT_EXPIRES_IN,
     PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
     CALLBACK_URL: process.env.CALLBACK_URL,
+    KARMA_SECRET_KEY: process.env.KARMA_SECRET_KEY,
 }

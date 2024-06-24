@@ -21,7 +21,7 @@ class UserController {
             .send({ success: true, message: "user successfully created", data: user });
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
     }
 
@@ -39,7 +39,8 @@ class UserController {
             res.status(200).send({ success: true, message: "login successful", data: response });
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            // throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
      }
 
@@ -53,14 +54,15 @@ class UserController {
      */
       async getMyself(req: CustomRequest, res: Response): Promise<void> {
         try {
-          if(req.user){
+            if (req.user) {
+              console.log(req.user)
             const userId = req.user._id;
             const response = await userService.getIdWithoutPassword(userId);
             res.status(200).send({ success: true, message: "Fetch sucessfully", data: response });
           }
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
      }
 
@@ -79,7 +81,7 @@ class UserController {
             res.status(200).send({ success: true, message: "Fetch sucessfully", data: response });
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
      }
 
@@ -98,7 +100,7 @@ class UserController {
             res.status(200).send({ success: true, message: "Fetch sucessfully", data: response });
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
      }
 }

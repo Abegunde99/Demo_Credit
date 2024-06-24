@@ -23,6 +23,50 @@ export interface IResponseData<T = unknown> {
     data: Data<T>;
 }
 
+export interface KResponseData<T = unknown> {
+    status: string;
+    message: string;
+    data: T;
+    meta: Meta;
+}
+
+export interface Meta {
+    cost: number;
+    balance: number;
+}
+
+export interface kData {
+    karma_identity: string;
+    amount_in_contention: string;
+    reason: string | null;
+    default_date: string;
+    karma_type: KarmaType;
+    karma_identity_type: KarmaIdentityType;
+    reporting_entity: ReportingEntity;
+}
+
+export interface KarmaType {
+    karma: string;
+}
+
+export interface KarmaIdentityType {
+    identity_type: string;
+}
+
+export interface ReportingEntity {
+    name: string;
+    email: string;
+}
+
+export interface IKarmaResponse {
+    status: string;
+    message: string;
+    meta: {
+      balance: number;
+    };
+  }
+  
+
 // User Interfaces
 export interface IUser {
     id: number;
@@ -73,13 +117,13 @@ export interface IUserDataWHToken {
 
 // User Repository Interface
 export interface IUserRepository {
-    createUser(user: Omit<IUser, "id">): Promise<IData>;
+    createUser(user: Omit<IUser, "id">): Promise<number>;
     findByEmail(email: string): Promise<IUser | null>;
 }
 
 // User Service Interface
 export interface IUserService {
-    register(body: Omit<IUser, "id">): Promise<IUserData>;
+    register(body: Omit<IUser, "id">): Promise<IUserData | undefined>;
     login(data: Pick<IUser, "email" | "password">): Promise<IUserData | undefined>;
     hashPassword(password: string): Promise<string>;
     getOneByEmail(email: string): Promise<IUser | null>;

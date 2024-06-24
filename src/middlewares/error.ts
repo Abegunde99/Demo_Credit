@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ErrorResponse } from '../utils/errorResponse';
 import { CustomError } from '../interface';
 
-const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     let error = { ...err };
     error.message = err.message;
 

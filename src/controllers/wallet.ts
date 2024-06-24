@@ -21,7 +21,7 @@ class WalletController {
             }
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
      }
 
@@ -44,7 +44,7 @@ class WalletController {
           }
         } catch (err: any) {
             const status = err.status ? err.status : 400;
-            throw new ErrorResponse(err.message, status);
+            res.status(status).send({ message: err.message, data: null });
         }
       }
 
@@ -68,7 +68,7 @@ class WalletController {
         }
       } catch (err: any) {
         const status = err.status ? err.status : 400;
-        throw new ErrorResponse(err.message, status);
+        res.status(status).send({ message: err.message, data: null });
       }
     }
 
@@ -86,9 +86,24 @@ class WalletController {
           res.status(200).send({ success: true, message: "Verification complete", data: null });
       } catch (err: any) {
           const status = err.status ? err.status : 400;
-          throw new ErrorResponse(err.message, status);
+          res.status(status).send({ message: err.message, data: null });
       }
-   }
+  }
+  
+  async withdraw(req: CustomRequest, res: Response): Promise<void> { 
+    try {
+      if(req.user){
+        const userId = req.user._id;
+        await WalletService.withdraw(userId, req.body.amount);
+        res
+            .status(200)
+            .send({ success: true, message: "withdrawal is completed", data: null });
+      }
+    } catch (err: any) {
+        const status = err.status ? err.status : 400;
+        res.status(status).send({ message: err.message, data: null });
+    }
+  }
 }
 
 export default WalletController;

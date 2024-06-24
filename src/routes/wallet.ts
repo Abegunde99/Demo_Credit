@@ -12,5 +12,6 @@ router.route("/mywallet").get(AuthMiddleware.authorize, walletController.getMyWa
 router.route("/transfer").post(RequestBodyMiddleware.validate(WalletValidator.transfer()), AuthMiddleware.authorize, walletController.transfer);
 router.route("/fund").post(RequestBodyMiddleware.validate(WalletValidator.fund()), AuthMiddleware.authorize, walletController.fund);
 router.route("/verifyfunds").get(AuthMiddleware.checkParams, walletController.verifyPayment);
+router.route("/withdraw").post(RequestBodyMiddleware.validate(WalletValidator.withdraw()), AuthMiddleware.authorize, walletController.withdraw);
 
 export default router;

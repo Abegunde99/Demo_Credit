@@ -4,7 +4,6 @@ import knex from './database/db';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-console.log('got here')
 app.listen(PORT, () => { 
     console.log(`Server is running on port ${PORT}`);
     knex.raw('SELECT 1+1 as result').then(() => {

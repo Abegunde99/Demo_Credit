@@ -13,6 +13,12 @@ class WalletValidator {
           amount: Joi.number().min(1).required(),
         });
     }
+
+  static withdraw() {
+    return Joi.object({
+      amount: Joi.number().min(1).required(),
+    });
+  }
 }
 
 export default WalletValidator;

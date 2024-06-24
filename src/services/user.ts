@@ -1,28 +1,47 @@
 import { IUser, IUserData, IUserDataWHToken, IUserService } from "../interface";
 import { ErrorResponse } from "../utils/errorResponse";
+import ErrorMiddleware from "../middlewares/error2";
 import { genSalt, hash, compare } from "bcryptjs";
 import JwtUtility from "../utils/jwt";
 import UserRepository from "../repository/user";
 import WalletService from "./wallet";
+import KarmaService from './karma';
 import { SHA256 } from 'crypto-js';
 
 class UserService implements IUserService {
     generateUniqueNumber(): number {
-        const randomNumber = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-        const data = `${Date.now()}${randomNumber}`;
+        const randomNumber = Math.floor(Math.random() * 1e9); // Generate a random number with up to 9 digits
+        const timestamp = Date.now();
+        const data = `${timestamp}${randomNumber}`;
         const hashedData = SHA256(data).toString();
-        const uniqueNumberString = hashedData.substring(0, 10);
+        const uniqueNumberString = hashedData.substring(0, 9);
         const uniqueNumber = parseInt(uniqueNumberString, 16);
-      
-        return uniqueNumber;
+        
+        // Ensure the number is within the range of 9 digits
+        const maxNineDigitNumber = 999999999;
+        return uniqueNumber % maxNineDigitNumber;
     }
 
-    userResponseObject(user: IUser) {
-        return { 
+    async userResponseObject(id: number): Promise<IUserData | undefined> {
+        const user = await this.getOneByID(id);
+        if (user) {
+            return {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                id: user.id,
+                accessToken: JwtUtility.generateToken(user.id),
+                accountNumber: user.accountNumber
+            };
+        }
+    }
+
+    userResponseObject1(user: IUser): IUserData {
+        return {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            id: user.id, 
+            id: user.id,
             accessToken: JwtUtility.generateToken(user.id),
             accountNumber: user.accountNumber
         };
@@ -38,22 +57,23 @@ class UserService implements IUserService {
         };
     }
 
-    async register(body: Omit<IUser, "id" | "accountNumber">): Promise<IUserData> {
-        let user = await UserRepository.findByEmail(body.email);
+    async register(body: Omit<IUser, "id" | "accountNumber">): Promise<IUserData | undefined> {
+        const user = await UserRepository.findByEmail(body.email);
         if (user) {
-            throw new ErrorResponse("user already exists", 400);
+            ErrorMiddleware.errorHandler("user already exists", 400);
         }
         body.password = await this.hashPassword(body.password);
-        
-        user =  await UserRepository.createUser({ ...body, accountNumber: this.generateUniqueNumber() });
-        await WalletService.create({ userId: user.id});
-        return this.userResponseObject(user);
-    }
 
-    // removePassword(body: IUser) {
-    //     const { password, ...result } = body;
-    //     return result;
-    // }
+        //check if user is karma blacklisted
+        const response = await KarmaService.checkKarma(body.email);
+        if (response) {
+            ErrorMiddleware.errorHandler("user is blacklisted", 400);
+        }
+        
+        const createdUser = await UserRepository.createUser({ ...body, accountNumber: this.generateUniqueNumber() });
+        await WalletService.create({ userId: createdUser });
+        return this.userResponseObject(createdUser);
+    }
 
     removePassword(body: IUser): Omit<IUser, 'password'> {
         const result = { ...body };
@@ -70,7 +90,7 @@ class UserService implements IUserService {
     async getOneByEmail(email: string): Promise<IUser | null> {
         const user = await UserRepository.findByEmail(email.toLowerCase());
         if (!user) {
-            throw new ErrorResponse("user not found", 404);
+            ErrorMiddleware.errorHandler("user not found", 404);
         }
         return user;
     }
@@ -100,7 +120,7 @@ class UserService implements IUserService {
     async getOneByAccountNumber(accountNumber: number): Promise<IUserDataWHToken | undefined> {
         const user = await UserRepository.findByAccountNumber(accountNumber);
         if (!user) {
-            throw new ErrorResponse("user not found", 404);
+            ErrorMiddleware.errorHandler("user not found", 404);
         } else {
             return this.userResponseNoToken(user);
         }
@@ -115,9 +135,10 @@ class UserService implements IUserService {
         if (user) {
             const validPassword = await this.isValidPassword(data.password, user.password);
             if (!validPassword) {
-                throw new ErrorResponse("Invalid email or password", 400);
+                // throw new ErrorResponse("Invalid email or password", 400);
+                ErrorMiddleware.errorHandler("Invalid email or password", 400);
             }
-            return this.userResponseObject(user);
+            return this.userResponseObject1(user);
         }
     }
 }

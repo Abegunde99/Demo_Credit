@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('userId').unsigned().notNullable().references('id').inTable('users');
     table.integer('receiverId').unsigned().references('id').inTable('users');
     table.decimal('amount', 14, 2).notNullable();
-    table.string('reference').notNullable().unique();
+    table.string('reference').notNullable();
     table.string('transactionType').notNullable();
     table.timestamps(true, true);
   });

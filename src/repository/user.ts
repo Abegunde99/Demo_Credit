@@ -2,10 +2,12 @@ import knex from '../database/db';
 import { IData, IUser, IUserRepository } from '../interface';
 
 class UserRepository implements IUserRepository {
-    async createUser(item: Omit<IUser, "id">): Promise<IData> {
+  async createUser(item: Omit<IUser, "id">): Promise<number> {
+      console.log({item})
     const [result] = await knex('users')
         .insert(item)
         .returning('*');
+      console.log({result})
     return result;
   }
 
